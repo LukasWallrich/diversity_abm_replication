@@ -53,7 +53,7 @@ class Problem(Model):
     def draw_agents(self, k, l, N_agents):
         start = time.time()
         heuristics = self.evaluate_heuristics(self.generate_heuristics(k, l))
-        print(time.time() - start, "sec to evaluate heuristics")
+        #print(time.time() - start, "sec to evaluate heuristics")
         descriptives = {
             "worst_agent": min(heuristics.values()),
             "average_agent": mean(heuristics.values()),
@@ -65,7 +65,7 @@ class Problem(Model):
                 heuristics_selected = self.__sample_from_dict(heuristics, N_agents)
             if team_type == "best":
                 heuristics_selected = dict(Counter(heuristics).most_common(N_agents))
-            print(heuristics_selected)
+            #print(heuristics_selected)
             descriptives["team_average"] = mean(heuristics_selected.values())
             pairs = permutations(heuristics_selected, 2)
             descriptives["NPdiversity"] = mean([self.assess_hp_diversity(x[0], x[1]) for x in pairs])
@@ -74,7 +74,7 @@ class Problem(Model):
             agents = [PSAgent(self, id = team_type + str(idx), team = team_type, heuristic=val) for idx, val in enumerate(heuristics_selected)]
             for agent in agents:
                 self.schedule.add(agent)
-            print(descriptives["NPdiversity"])    
+            #print(descriptives["NPdiversity"])    
     
             self.agent_descriptives[team_type] = copy.copy(descriptives)
 
