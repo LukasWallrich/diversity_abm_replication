@@ -1,3 +1,4 @@
+#Model as used by Hong & Page
 
 #%%
 from statistics import mean
