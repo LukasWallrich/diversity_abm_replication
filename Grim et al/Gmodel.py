@@ -1,9 +1,9 @@
 import httpimport
-url = "https://gist.githubusercontent.com/LukasWallrich/74df5b2ec209c34166bab9e8cb46a279/raw/56a85f6eccda9fc92f3dd73e151df8f0ec06aadf"
+url = "https://gist.githubusercontent.com/LukasWallrich/05f445821fbae694b37a205dc08b2b4f/raw/6163cfc6aaa9eba33738f42c5b1a35cff1053005"
 
-with httpimport.remote_repo(["HP_model"], url):
-    from HP_model import HPProblem
-    
+with httpimport.remote_repo(["HPmodel"], url):
+    from HPmodel import HPProblem
+
 import pandas as pd
 import numpy as np
 
