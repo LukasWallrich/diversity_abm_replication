@@ -1,4 +1,4 @@
-#Model as used by Hong & Page
+#ABM as proposed by Hong & Page (2004)
 
 #%%
 from statistics import mean
