@@ -1,0 +1,22 @@
+
+on:
+  push:
+    paths:
+      - 'HP_model.py'	 
+      
+name: push-class-to-gist
+
+jobs:
+  # This workflow contains a single job called "build"
+  push-gist:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy
+      uses: exuanbo/actions-deploy-gist@v1
+      with:
+        token: ${{ secrets.TOKEN }}
+        gist_id: 74df5b2ec209c34166bab9e8cb46a279
+        gist_file_name: HP_model.py
+        file_path: ./Hong_and_Page/HP_model.py
