@@ -28,7 +28,8 @@ class PSAgent(Agent):
         self.heuristic = problem.random.sample(range(1,l+1) , k)
 
     def initialise_focus(self, problem):
-        self.focus =  problem.random.randint(0, problem.n - 1)
+        #self.focus =  problem.random.randint(0, problem.n - 1)
+        self.focus = 0 #All agents start together
 
     def step(self):
         self.focus, self.best_solution = self.problem.max_search(agent = self)
@@ -45,7 +46,7 @@ class Problem(Model):
         self.draw_solution(n)
         self.optimal_solution = max(self.solution)
         self.best_solution = {"random": 0, "best": 0}
-        self.current_position = {"random": self.random.randint(0, self.n - 1), "best": self.random.randint(0, self.n - 1)} #Start search at random position
+        self.current_position = {"random": 0, "best": 0} #Start search from same position
         self.running = True
         self.draw_agents(k, l, N_agents)
 

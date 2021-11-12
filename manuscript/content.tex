@@ -1,0 +1,40 @@
+Many debates around diversity are concerned with the performance of diverse teams when it comes to creativity and problem-solving. If diverse teams outperform homogenous teams, this would offer an additional argument for broader inclusion, and hold clear practical lessons for decision-makers. Some of the most important research in this field has been computational, yet replications are lacking. This paper offers a direct replication of the most influential model in the field\supercite{hong_groups_2004}, and a replication of a recent paper that offered important qualifications\supercite{grim_diversity_2019}. By doing so with the use of an agent-based modeling framework that easily allows for extensions and adjustments to the model, this will hopefully be helpful for future research into the conditions under which diversity trumps ability.
+
+Seventeen years ago, Hong and Page\supercite{hong_groups_2004} proposed that diversity generally trumps ability when it comes to the composition of groups of problem solvers. To support this argument, their paper, which has been cited more than 1,400 times, presented the results of an agent-based model. While similar models have been used in further research \supercite{singer2019diversity, grim_diversity_2019, holman2018diversity}, no direct replication has been published, and neither the original paper nor any of the derivations provide software code. Recent research has proposed qualifications to the original conclusions, and by replicating one of the most critical recent papers\supercite{grim_diversity_2019}, I show that these concerns are warranted.  
+
+\subsubsection{The basic model}
+
+In order to explore the process of problem-solving, Hong and Page tasked teams of agents with finding the highest value in a ring of 2,000 random numbers, which can be thought of as payoffs associated with specific options. Each agent approaches this task with a distinct heuristic that consists of an ordered set of non-repeating integers $\{h_{1}, h_{2}, h_{3}\}$. From their current position on the ring, they look forward $h_{1}$ steps and move there if the value is greater than the current value. Otherwise, they stay put. They then try $h_{2}$ steps, $h_{3}$, $h_{1}$ steps again, and so on, until none of the three checks yields a higher value and thus a move. When they are in a group, they move together, with each agent in turn moving the entire group to the greatest value their heuristic can identify. 
+
+To explore the trade-off between individual agents' ability and a group's diversity, these concepts need to be defined. Given that each agent's heuristic results in a unique end point from any given starting point, their \emph{ability} is defined as the \emph{average value of the end points reached from every possible starting point}. A group's \emph{diversity} is defined as the \emph{average percentage with which any pairs of heuristics do not overlap}. For example, $1, 2, 3$ and $1, 3, 5$ only overlap in one place, while $3, 4, 5$ and $4, 5, 6$ do not overlap at all.\footnote{Note that Singer\supercite{singer2019diversity} shows that a different measure of diversity - \emph{coverage diversity}, i.e. the share of possible steps covered by at least a single member of the group - more directly predicts a group's performance.} Their key result is that groups of the highest-ability agents are less diverse than randomly selected groups, and thus identify worse solutions.
+
+\subsubsection{Grim et al.'s extension and qualification}
+
+In a random landscape, there are no heuristics that consistently outperform others, instead agents' ability is unrelated between one problem and the next. Grim et al.\supercite{grim_diversity_2019} pointed out that this is a rather peculiar situation, as problem-solving in most domains benefits from expertise, i.e. from the use of heuristics that tend to be successful across problems. In their model, they vary the randomness of the landscape by specifying the share of points that are randomly assigned and then establishing smooth gradients between them. Their results suggest that in settings with lower randomness, the correlation between a heuristic's performance on different problems increases. In such settings, they find that teams selected based on their ability outperform randomly selected (and thus more diverse) teams.
+
+\chapter{Method}
+
+The model formulation used in this paper is the same as that used in the original paper by Hong and Page, with the addition of the smoothing parameter in the replication of the findings by Grim et al.
+
+\subsubsection{Parameters}
+
+Problems are characterised by the number of possible solutions, i.e. values on the circle (\emph{N}). In line with the papers to be replicated, this is set to 2000. Heuristics are defined by the number of positions considered by each agent (\emph{k}), which is set to three steps, and the range of step sizes to be considered (\emph{l}). Here, parameter values of 12 and 20 are explored. Finally, groups are characterised by their size, which is set to be either 10 or 20 agents.
+
+!! Grim used groups of 9 for no obvious reason - change to 10 here.
+
+\subsubsection{Implementation}
+
+To replicate the two papers, and support future research, I implemented the model in Python, using the mesa framework \supercite{kazil2020utilizing}. This yields very readable and explicit code, yet is not particularly efficient. While the original paper reports results based on 50 runs with each parameter combination, all results here are based on 500 runs.
+
+!! Continue to use 100 runs for Grim
+
+\subsubsection{Focus}
+
+To enable direct comparisons between replication results and the original papers, I focus on replicating Table 1 in Hong and Page's paper, and Figure 2 in Grim et al.'s paper, since they provide the foundation for their main conclusions.
+
+\chapter{Results}
+
+
+
+\chapter{Discussion}
+
