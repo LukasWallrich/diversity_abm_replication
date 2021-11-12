@@ -1,8 +1,8 @@
-
 on:
   push:
-    paths:
-      - './Hong_and_Page/HP_model.py'	 
+    branches:
+      - main
+      - master
       
 name: push-class-to-gist
 
