@@ -7,14 +7,21 @@ on:
 name: push-class-to-gist
 
 jobs:
-  push-gist:
+  push-gists:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Deploy
+    - name: Deploy HP
       uses: exuanbo/actions-deploy-gist@v1
       with:
         token: ${{ secrets.TOKEN }}
         gist_id: 74df5b2ec209c34166bab9e8cb46a279
         gist_file_name: HP_model.py
         file_path: ./Hong_and_Page/HP_model.py
+    - name: Deploy Grim
+      uses: exuanbo/actions-deploy-gist@v1
+      with:
+        token: ${{ secrets.TOKEN }}
+        gist_id: 28e5474bda3176fe329f3f2664fa81a8
+        gist_file_name: G_model.py
+        file_path: ./Grim et al/G_model.py
