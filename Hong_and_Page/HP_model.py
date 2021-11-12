@@ -1,4 +1,4 @@
-#ABM as proposed by Hong & Page (2004)
+# ABM as proposed by Hong & Page (2004)
 
 #%%
 from statistics import mean
