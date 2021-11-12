@@ -1,8 +1,13 @@
-from HP_model import Problem
+import httpimport
+url = "https://gist.githubusercontent.com/LukasWallrich/74df5b2ec209c34166bab9e8cb46a279/raw/56a85f6eccda9fc92f3dd73e151df8f0ec06aadf"
+
+with httpimport.remote_repo(["HP_model"], url):
+    from HP_model import HPProblem
+    
 import pandas as pd
 import numpy as np
 
-class GProblem(Problem):
+class GProblem(HPProblem):
     def __init__(self, n, k, l, N_agents, smoothness, seed = None, schedule = "base"):
         self.draw_G_solution(n, smoothness)
         super().__init__(n, k, l, N_agents, seed, schedule)
