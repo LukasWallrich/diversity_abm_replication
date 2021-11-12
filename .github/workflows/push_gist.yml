@@ -2,14 +2,12 @@
 on:
   push:
     paths:
-      - 'HP_model.py'	 
+      - './Hong_and_Page/HP_model.py'	 
       
 name: push-class-to-gist
 
 jobs:
-  # This workflow contains a single job called "build"
   push-gist:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
