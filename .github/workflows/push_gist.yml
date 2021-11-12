@@ -15,9 +15,9 @@ jobs:
       uses: exuanbo/actions-deploy-gist@v1
       with:
         token: ${{ secrets.TOKEN }}
-        gist_id: 74df5b2ec209c34166bab9e8cb46a279
+        gist_id: 05f445821fbae694b37a205dc08b2b4f
         gist_file_name: HP_model.py
-        file_path: ./Hong_and_Page/HP_model.py
+        file_path: ./Hong_and_Page/HPmodel.py
     - name: Deploy Grim
       uses: exuanbo/actions-deploy-gist@v1
       with:
