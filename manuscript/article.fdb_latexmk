@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1632336800 "c:/Users/Lukas Wallrich/OneDrive - Birkbeck, University of London/Documents/Research/Hong and Page replication/manuscript/article.tex" "article.pdf" "article" 1632336804
+["pdflatex"] 1632336800 "c:/Users/Lukas Wallrich/OneDrive - Birkbeck, University of London/Documents/Research/Hong and Page replication/manuscript/article.tex" "article.pdf" "article" 1636989204
   "C:/Users/Lukas Wallrich/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1632336794 9747153 692ea48148e09f34bdf34a9291b23d38 ""
   "C:/Users/Lukas Wallrich/AppData/Local/Programs/MiKTeX/tex/generic/babel/babel.def" 1622647513 121009 d797444026f7ec580bc6c8aa432a71ab ""
   "C:/Users/Lukas Wallrich/AppData/Local/Programs/MiKTeX/tex/generic/babel/babel.sty" 1622647513 38293 26f2f602aa9980977a58a9f27958a46e ""
@@ -108,5 +108,5 @@
   "c:/Users/Lukas Wallrich/OneDrive - Birkbeck, University of London/Documents/Research/Hong and Page replication/manuscript/article.tex" 1632222443 230 88cacae340cd5e0390fa8334f01585d4 ""
   "rescience.cls" 1632222443 12764 29d93eea55b386a6bcc39c1378b403ad ""
   (generated)
-  "article.log"
   "article.pdf"
+  "article.log"

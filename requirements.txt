@@ -2,4 +2,4 @@ jupyter
 matplotlib
 pandas
 mesa
-packyou
+httpimport

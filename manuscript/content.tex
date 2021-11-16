@@ -18,23 +18,52 @@ The model formulation used in this paper is the same as that used in the origina
 
 \subsubsection{Parameters}
 
-Problems are characterised by the number of possible solutions, i.e. values on the circle (\emph{N}). In line with the papers to be replicated, this is set to 2000. Heuristics are defined by the number of positions considered by each agent (\emph{k}), which is set to three steps, and the range of step sizes to be considered (\emph{l}). Here, parameter values of 12 and 20 are explored. Finally, groups are characterised by their size, which is set to be either 10 or 20 agents.
+Problems are characterised by the number of possible solutions, i.e. values on the circle (\emph{N}). In line with the papers to be replicated, this is set to 2000. Heuristics are defined by the number of positions considered by each agent (\emph{k}), which is set to three steps, and the range of step sizes to be considered (\emph{l}). Here, parameter values of 12 and 20 are explored. Finally, groups of agents are characterised by their size, which is set to be either 10 or 20 agents.
 
 !! Grim used groups of 9 for no obvious reason - change to 10 here.
 
 \subsubsection{Implementation}
 
-To replicate the two papers, and support future research, I implemented the model in Python, using the mesa framework \supercite{kazil2020utilizing}. This yields very readable and explicit code, yet is not particularly efficient. While the original paper reports results based on 50 runs with each parameter combination, all results here are based on 500 runs.
-
-!! Continue to use 100 runs for Grim
+To replicate the two papers, and support future research, I implemented the model in Python, using the mesa framework \supercite{kazil2020utilizing}. This yields very readable and explicit code, yet is not particularly optimised. While Hong and Page (2004) report results based on 50 runs and Grim et al. rely on 100 runs, all results here are based on 500 runs. In the supplementary material, instruction for conducting these runs on Google Cloud Engine are provided, which allows them to be completed in a few hours.
 
 \subsubsection{Focus}
 
-To enable direct comparisons between replication results and the original papers, I focus on replicating Table 1 in Hong and Page's paper, and Figure 2 in Grim et al.'s paper, since they provide the foundation for their main conclusions.
+To enable direct comparisons between the replication results and the original papers, I focus on replicating Table 1 in Hong and Page's paper, and Figure 2 in Grim et al.'s paper, since they provide the foundation for their main conclusions.
 
 \chapter{Results}
 
+\subsubsection{The basic model: Hong and Page}
 
+The replication confirmed the pattern of results observed by Hong and Page, as can be seen in Table 1. Random groups of agents outperformed groups of only the best agents in each of the four scenarios, and the observed performances were generally similar. However, there are two notable divergences: the \textit{standard deviations} reported by Hong and Page and those observed here vary by orders of magnitude. For instance, the standard deviation of the performance of group of 10 best agents with l = 12 observed here was 6.84 while Hong and Page report 0.020. However, their results seem highly implausible. For instance, they describe the results of a "representative" run in detail, during which the best agents achieved 93.2. With their standard deviation, this would translate into a z-score of 32; standard statistical software cannot even compute how unlikely such an observation would be. Similarly, the expected standard deviation in groups of random agents can be simulated straight-forwardly - in the case of l = 12 and k = 3, it is around 2.4\%-age points for teams of 10 agents and 1.1\%-age points for teams of 20 agents, each simulated over 10,000 teams, which matches what is seen in the results here. However, Hong and Page (2004) report standard deviations of 0.23 and 0.09\%-age points respectively. Thus, it appears that something is misreported here in the original article.
+
+Less straight-forwardly, the \textit{observed diversity in the best teams} diverges substantially. Here, it was 85 to 88\%, compared to 71 to 75\% reported in Hong and Page. Given that the observed diversity within random groups is very close to that reported by Hong and Page, it appears unlikely that the discrepancy is due to differences in the calculation of diversity. Grim et al. (2019, Table 1) report the heuristics used by 10 groups of 9 best agents in their replication of the Hong and Page model. On average, these group had a diversity of 83\% - evidently, this estimate is based on a sample size of 10 and thus highly imprecise, yet it is closer to the results obtained here than to those reported by Hong and Page.  
+
+Regarding the size of the effect, one might wish to note that the results obtained by 10 randomly selected agents with heuristics including step-sizes of up to 12 were only matched by groups of 20 "best" agents using more expensive heuristics, with step sizes ranging up to 20. When comparing the two groups head-to-head, and excluding between 25\% and 50\% of ties, the odds of the random group winning over the best group were between 1.6 (\textit{N} = 10, \textit{l} = 20) and 2.2 (\textit{N} = 10, \textit{l} = 12).
+
+\begin{table}
+   \centering
+   \caption{Results of 500 runs of Hong & Page model}
+   \begin{tabular}{lllll}
+   \toprule
+      &    &        &      Solution &     Diversity \\
+   N\_agents & l & team\_type &               &               \\
+   \midrule
+   10 & 12 & best &  92.48 (6.84) &  84.76 (4.39) \\
+      &    & random &  94.45 (5.55) &   91.63 (2.4) \\
+      & 20 & best &  93.27 (6.89) &  86.95 (4.61) \\
+      &    & random &  95.43 (4.29) &  94.92 (1.89) \\
+   20 & 12 & best &   93.56 (6.5) &  85.85 (2.98) \\
+      &    & random &  94.67 (5.57) &  91.75 (1.15) \\
+      & 20 & best &   94.8 (4.97) &   88.46 (3.3) \\
+      &    & random &  96.56 (3.33) &  95.07 (0.91) \\
+   \bottomrule
+   \end{tabular}
+   \end{table}
+   
+    
+\subsubsection{Expansion to smoothed landscapes: Grim et al.}
+
+Grim et al. (2019) extended the mdel by Hong and Page to test whether the degree of smoothness across the solution landscape makes a difference. For fully random landscapes, their paper and my replication thereof, confirms the analysis by Hong and Page: randomly selected teams outperform teams of the best agents by some 1-2\%-age points, and thus by .
 
 \chapter{Discussion}
 
