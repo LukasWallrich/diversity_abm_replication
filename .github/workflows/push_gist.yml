@@ -16,12 +16,12 @@ jobs:
       with:
         token: ${{ secrets.TOKEN }}
         gist_id: 05f445821fbae694b37a205dc08b2b4f
-        gist_file_name: HP_model.py
+        gist_file_name: HPmodel.py
         file_path: ./Hong_and_Page/HPmodel.py
     - name: Deploy Grim
       uses: exuanbo/actions-deploy-gist@v1
       with:
         token: ${{ secrets.TOKEN }}
-        gist_id: 28e5474bda3176fe329f3f2664fa81a8
-        gist_file_name: G_model.py
-        file_path: ./Grim et al/G_model.py
+        gist_id: 42dea3211f0bde452781dd9b69c8199a
+        gist_file_name: Gmodel.py
+        file_path: ./Grim et al/Gmodel.py
