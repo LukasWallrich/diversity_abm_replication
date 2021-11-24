@@ -90,7 +90,7 @@ class HPProblem(Model):
             heuristic = agent.heuristic
             last_value = self.solution[self.current_position[agent.team] % self.n]
         else: #When heuristics are evaluated
-            last_value = 0
+            last_value = self.solution[(start) % self.n]
 
         current = start
 
