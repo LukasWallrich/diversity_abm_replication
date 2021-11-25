@@ -111,7 +111,7 @@ class HPProblem(Model):
 
         if update: #Should only be used when agents search
             self.best_solution[agent.team] = optima[0]
-            self.current_position[agent.team] = start    
+            self.current_position[agent.team] = current    
 
         return current, mean(optima) 
 
