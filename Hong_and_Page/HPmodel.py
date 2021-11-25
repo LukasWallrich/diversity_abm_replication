@@ -110,7 +110,7 @@ class HPProblem(Model):
                     break 
 
         if update: #Should only be used when agents search
-            self.best_solution[agent.team] = optima.pop()
+            self.best_solution[agent.team] = optima[0]
             self.current_position[agent.team] = start    
 
         return current, mean(optima) 
