@@ -7,6 +7,7 @@ from itertools import permutations
 from mesa import Agent, Model
 from mesa.time import BaseScheduler, RandomActivation
 import copy
+import time
 
 #%%
 class PSAgent(Agent):
@@ -28,6 +29,7 @@ class PSAgent(Agent):
         self.heuristic = problem.random.sample(range(1,l+1) , k)
 
     def step(self):
+#        print("Agent starting from " + str(self.problem.current_position))
         self.focus, self.best_solution = self.problem.max_search(agent = self)
 
 class HPProblem(Model):
@@ -45,13 +47,10 @@ class HPProblem(Model):
         self.optimal_solution = max(self.solution)
         self.best_solution = {"random": 0, "best": 0}
         self.current_position = {"random": 0, "best": 0}
-        
         self.draw_agents(k, l, N_agents)
         self.running = True
 
-
     def draw_agents(self, k, l, N_agents):
-
         heuristics = self.evaluate_heuristics(self.generate_heuristics(k, l))
 
         descriptives = {
@@ -83,32 +82,38 @@ class HPProblem(Model):
 
     #Agent tries to take steps of heuristic length, only moving forward if successful
     #Explained most clearly by Singer
-    def max_search(self, agent = None, heuristic = None, start = None,  update = True):
+    def max_search(self, agent = None, heuristic = None, update = True):
+
+        N = self.n #To speed things up
+        SOLUTION = self.solution
 
         if heuristic == None: #When agents search
-            start = self.current_position[agent.team]
+            start = [self.current_position[agent.team]]
             heuristic = agent.heuristic
-            last_value = self.solution[self.current_position[agent.team] % self.n]
         else: #When heuristics are evaluated
-            last_value = self.solution[(start) % self.n]
+            start = range(N)
 
-        current = start
+        optima = []
 
-        while True:
-            old_value = last_value
-            for step in heuristic:
-                new_value = self.solution[(current+step) % self.n]
-                if  new_value > last_value:
-                    last_value = new_value
-                    current += step
-            if old_value == last_value: #No change on k checks
-                break 
+        for current in start:
+            last_value = SOLUTION[current % N]
 
-        if update:
-            self.best_solution[agent.team] = last_value
-            self.current_position[agent.team] = current    
+            while True:
+                old_value = last_value
+                for step in heuristic:
+                    new_value = SOLUTION[(current+step) % N]
+                    if  new_value > last_value:
+                        last_value = new_value
+                        current += step
+                if old_value == last_value: #No change on k checks
+                    optima.append(last_value)
+                    break 
 
-        return current, last_value 
+        if update: #Should only be used when agents search
+            self.best_solution[agent.team] = optima.pop()
+            self.current_position[agent.team] = start    
+
+        return current, mean(optima) 
 
     def generate_heuristics(self, k,l):
         return permutations(range(1, l + 1), k)
@@ -116,10 +121,7 @@ class HPProblem(Model):
     def evaluate_heuristics(self, heuristics):
         expectations = {}
         for heuristic in heuristics:
-            results = list()
-            for i in range(self.n):
-                results.append(self.max_search(heuristic = heuristic, start = i, update=False)[1])
-            expectations[heuristic] = mean(results)
+            expectations[heuristic] = self.max_search(heuristic = heuristic, update=False)[1]
         return expectations     
 
     def __sample_from_dict(self, d, sample): #From https://stackoverflow.com/a/66018057/10581449
@@ -131,9 +133,24 @@ class HPProblem(Model):
         res = (len(heuristic1)-sum(x == y for x, y in zip(heuristic1, heuristic2)))/len(heuristic1)
         return res
 
+    def dict_mean(self, dict_list):
+        #Thanks to https://stackoverflow.com/a/55220333/10581449
+        mean_dict = {}
+        for key in dict_list[0].keys():
+            mean_dict[key] = sum(d[key] for d in dict_list) / len(dict_list)
+        return mean_dict
+
     def step(self):
-        old_solution = self.best_solution
-        self.schedule.step()
-        if old_solution == self.best_solution:
-            self.running = False    
+        solutions = list()
+        for i in range(self.n):
+            self.current_position = dict.fromkeys(self.current_position, i)
+#            print("Assessing start from" + str(i))
+            old_solution = self.best_solution
+            while True:
+               self.schedule.step()
+               if old_solution == self.best_solution:
+                solutions.append(copy.copy(self.best_solution))
+                break
+        self.best_solution = self.dict_mean(solutions)
+        self.running = False    
 
