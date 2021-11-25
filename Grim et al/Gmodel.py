@@ -1,5 +1,5 @@
 import httpimport
-url = "https://gist.githubusercontent.com/LukasWallrich/05f445821fbae694b37a205dc08b2b4f/raw/6163cfc6aaa9eba33738f42c5b1a35cff1053005"
+url = "https://gist.githubusercontent.com/LukasWallrich/05f445821fbae694b37a205dc08b2b4f/raw/"
 
 with httpimport.remote_repo(["HPmodel"], url):
     from HPmodel import HPProblem
@@ -24,10 +24,13 @@ class GProblem(HPProblem):
             while(i < n):
                 solution[i] = self.random.uniform(0, 100)
                 i += 1+self.random.randrange(2*smoothness)
+                
+            #Unless last value is specified, close the circle    
             if (pd.isna(solution[n-1])):
                 solution[n] = solution[0]     
             solution = solution.interpolate().tolist()    
             if (len(solution) > n):
                 solution.pop()
+                
             self.solution = solution              
 
