@@ -145,8 +145,8 @@ class HPProblem(Model):
         for i in range(self.n):
             self.current_position = dict.fromkeys(self.current_position, i)
 #            print("Assessing start from" + str(i))
-            old_solution = self.best_solution
             while True:
+            old_solution = self.best_solution
                self.schedule.step()
                if old_solution == self.best_solution:
                 solutions.append(copy.copy(self.best_solution))

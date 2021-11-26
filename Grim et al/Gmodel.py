@@ -2,15 +2,27 @@ import httpimport
 url = "https://gist.githubusercontent.com/LukasWallrich/05f445821fbae694b37a205dc08b2b4f/raw/"
 
 with httpimport.remote_repo(["HPmodel"], url):
-    from HPmodel import HPProblem
+    from HPmodel import HPProblem, PSAgent
 
 import pandas as pd
 import numpy as np
+from copy import copy
+
+class GrimAgent(PSAgent):
+    def step(self):
+#        print("Agent starting from " + str(self.problem.current_position))
+        if self.problem.strategy == "relay":
+           self.focus, self.best_solution = self.problem.max_search(agent = self)
+        if self.problem.strategy == "tournament":
+           self.focus, self.best_solution = self.problem.max_search(agent = self, update = False)
+
+
 
 class GProblem(HPProblem):
-    def __init__(self, n, k, l, N_agents, smoothness, seed = None, schedule = "base"):
+    def __init__(self, n, k, l, N_agents, smoothness, seed = None, schedule = "base", strategy = "relay", agent_class = GrimAgent):
         self.draw_G_solution(n, smoothness)
-        super().__init__(n, k, l, N_agents, seed, schedule)
+        super().__init__(n, k, l, N_agents, seed, schedule, agent_class = agent_class)
+        self.strategy = strategy
 
     def draw_solution(self, n):
         pass
@@ -33,4 +45,39 @@ class GProblem(HPProblem):
                 solution.pop()
                 
             self.solution = solution              
+
+    def tournament_step(self):
+        solutions = list()
+        for i in range(self.n):
+            self.current_position = dict.fromkeys(self.current_position, i)
+            while True:
+                old_solution = self.best_solution
+                self.schedule.step()
+                pos = [{"team": a.__getattribute__("team"), "solution": a.__getattribute__("best_solution"), "focus": a.__getattribute__("focus")} for a in self.schedule.agents]
+                teams = set(d["team"] for d in pos)
+                self.current_position = {t:max(list(filter(lambda d: d['team'] == t, pos)), key = lambda x:x["solution"])["focus"] for t in teams}
+                self.best_solution = {t:max(list(filter(lambda d: d['team'] == t, pos)), key = lambda x:x["solution"])["solution"] for t in teams}
+                if old_solution == self.best_solution:
+                    solutions.append(copy(self.best_solution))
+                    break
+        self.running = False  
+        self.best_solution = self.dict_mean(solutions)
+
+    def step(self):
+        
+        if(self.strategy == "both"):
+            self.strategy = "relay"
+            super().step()
+            sol = {"relay_" + str(key): val for key, val in self.best_solution.items()}
+            self.strategy = "tournament"
+            self.tournament_step()
+            self.best_solution = dict(sol, **{"tournament_" + str(key): val for key, val in self.best_solution.items()})
+            self.strategy = "both"
+            return None
+
+        if self.strategy == "relay":
+            super().step()
+        if self.strategy == "tournament":
+            self.tournament_step()
+            self.running = False  
 
