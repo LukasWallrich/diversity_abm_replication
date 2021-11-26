@@ -25,3 +25,10 @@ jobs:
         gist_id: 42dea3211f0bde452781dd9b69c8199a
         gist_file_name: Gmodel.py
         file_path: ./Grim et al/Gmodel.py
+    - name: Deploy script
+      uses: exuanbo/actions-deploy-gist@v1
+      with:
+        token: ${{ secrets.TOKEN }}
+        gist_id: 0c13537940fd34a64f3ea97586441b0c
+        gist_file_name: run_simulation.py
+        file_path: ./run_simulation.py
