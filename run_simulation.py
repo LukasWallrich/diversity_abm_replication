@@ -1,4 +1,4 @@
-GCE.PREFIX = "testSweep"
+GCE.PREFIX = "GrimSweepTournament"
 
 from mesa.batchrunner import BatchRunnerMP
 
@@ -17,14 +17,14 @@ fixed_params = {"n": 2000,
                }
 variable_params = {
                    "smoothness": list(range(21)),
-                   "l": range(4, 10)
+                   "l": range(4, 31)
                    }
 
 batch_run = BatchRunnerMP(GProblem,
                         24,
                         variable_parameters = variable_params,
                         fixed_parameters = fixed_params,
-                        iterations=1,
+                        iterations=100,
                         max_steps=100,
                         model_reporters={"agent_descriptives": lambda m: m.agent_descriptives,
                         "best_solution": lambda m: m.best_solution})
