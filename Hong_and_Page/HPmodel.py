@@ -34,7 +34,7 @@ class PSAgent(Agent):
 
 class HPProblem(Model):
 
-    def __init__(self, n, k, l, N_agents, seed = None, schedule = "base"):
+    def __init__(self, n, k, l, N_agents, seed = None, schedule = "base", agent_class = PSAgent):
         
         if schedule == "base":
             self.schedule = BaseScheduler(self)
@@ -47,10 +47,10 @@ class HPProblem(Model):
         self.optimal_solution = max(self.solution)
         self.best_solution = {"random": 0, "best": 0}
         self.current_position = {"random": 0, "best": 0}
-        self.draw_agents(k, l, N_agents)
+        self.draw_agents(k, l, N_agents, agent_class)
         self.running = True
 
-    def draw_agents(self, k, l, N_agents):
+    def draw_agents(self, k, l, N_agents, agent_class):
         heuristics = self.evaluate_heuristics(self.generate_heuristics(k, l))
 
         descriptives = {
@@ -70,7 +70,7 @@ class HPProblem(Model):
             pairs = permutations(heuristics_selected, 2)
             descriptives["NPdiversity"] = mean([self.assess_hp_diversity(x[0], x[1]) for x in pairs])
 
-            agents = [PSAgent(self, id = team_type + str(idx), team = team_type, heuristic=val) for idx, val in enumerate(heuristics_selected)]
+            agents = [agent_class(self, id = team_type + str(idx), team = team_type, heuristic=val) for idx, val in enumerate(heuristics_selected)]
 
             for agent in agents:
                 self.schedule.add(agent)
