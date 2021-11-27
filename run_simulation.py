@@ -1,4 +1,6 @@
-GCE.PREFIX = "GrimSweepTournament"
+from datetime import datetime
+
+GCE.PREFIX = "GrimSweepTournament" + datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
 from mesa.batchrunner import BatchRunnerMP
 
@@ -21,10 +23,10 @@ variable_params = {
                    }
 
 batch_run = BatchRunnerMP(GProblem,
-                        24,
+                        16,
                         variable_parameters = variable_params,
                         fixed_parameters = fixed_params,
-                        iterations=100,
+                        iterations=20,
                         max_steps=100,
                         model_reporters={"agent_descriptives": lambda m: m.agent_descriptives,
                         "best_solution": lambda m: m.best_solution})
