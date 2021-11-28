@@ -23,10 +23,10 @@ variable_params = {
                    }
 
 batch_run = BatchRunnerMP(GProblem,
-                        16,
+                        32,
                         variable_parameters = variable_params,
                         fixed_parameters = fixed_params,
-                        iterations=20,
+                        iterations=40,
                         max_steps=100,
                         model_reporters={"agent_descriptives": lambda m: m.agent_descriptives,
                         "best_solution": lambda m: m.best_solution})
