@@ -5,7 +5,7 @@
 #  - For a successful replication, it should be prefixed with "[Re]"
 #  - For a failed replication, it should be prefixed with "[¬Re]"
 #  - For other article types, no instruction (but please, not too long)
-title: "[Re] When groups of diverse problem-solvers outperform groups of highest-ability problem-solvers: expertise matters"
+title: "[Re] Groups of diverse problem-solvers outperform groups of highest-ability problem-solvers - most of the time"
 
 # List of authors with name, orcid number, email and affiliation
 # Affiliation "*" means contact author (required even for single-authored papers)
@@ -44,12 +44,15 @@ data:
 replication:
  - cite: Grim, P., Singer, D. J., Bramson, A., Holman, B., McGeehan, S., & Berger, W. J. (2019). Diversity, ability, and expertise in epistemic communities. Philosophy of Science, 86(1), 98-123.
  - bib:  grim_diversity_2019
- - url:  https://www.researchgate.net/publication/328150961_Diversity_Ability_and_Expertise_in_Epistemic_Communities/link/605b6a0aa6fdccbfea048495/download
+ - url:  https://www.researchgate.net/publication/328150961\_Diversity\_Ability\_and\_Expertise\_in\_Epistemic\_Communities/link/605b6a0aa6fdccbfea048495/download
  - doi:  10.1086/701070
 
 # Don't forget to surround abstract with double quotes
-abstract: "Write an abstract
-           in metadata.yaml."
+abstract: "Problem-solving teams are becoming increasingly diverse, which has been suggested to improve performance. 
+Pioneering computational work by Hong & Page (2004) suggested that diversity indeed trumps ability when it comes to 
+finding the peaks in a random landscape. Recently, Grim and colleagues (2019) extended the model to consider more structured
+landscapes and suggested that the original claim only holds under limited circumstances. In this paper, I replicate the main
+findings of the two works, and provide modular, extensible code to facilitate future research into this paradigm. Overall, the replications were successful, even though a closer look at the data suggests that the limitations highlighted by Grim and colleagues are less severe than initially presented, so that diversity on the whole still appears to trump ability within this paradigm. The code for the agent-based models and my analyses is available on https://github.com/LukasWallrich/diversity\_abm\_replication."
 
 # Bibliography file (yours)
 bibliography: bibliography.bib

@@ -1,69 +1,110 @@
-Many debates around diversity are concerned with the performance of diverse teams when it comes to creativity and problem-solving. If diverse teams outperform homogenous teams, this would offer an additional argument for broader inclusion, and hold clear practical lessons for decision-makers. Some of the most important research in this field has been computational, yet replications are lacking. This paper offers a direct replication of the most influential model in the field\supercite{hong_groups_2004}, and a replication of a recent paper that offered important qualifications\supercite{grim_diversity_2019}. By doing so with the use of an agent-based modeling framework that easily allows for extensions and adjustments to the model, this will hopefully be helpful for future research into the conditions under which diversity trumps ability.
 
-Seventeen years ago, Hong and Page\supercite{hong_groups_2004} proposed that diversity generally trumps ability when it comes to the composition of groups of problem solvers. To support this argument, their paper, which has been cited more than 1,400 times, presented the results of an agent-based model. While similar models have been used in further research \supercite{singer2019diversity, grim_diversity_2019, holman2018diversity}, no direct replication has been published, and neither the original paper nor any of the derivations provide software code. Recent research has proposed qualifications to the original conclusions, and by replicating one of the most critical recent papers\supercite{grim_diversity_2019}, I show that these concerns are warranted.  
+\section{Introduction}
+
+With increasing diversity, there have been renewed debates concerning the performance of diverse teams when it comes to creativity and problem-solving. If diverse teams outperform homogenous teams, this would offer an additional argument for broader inclusion, and hold clear practical lessons for decision-makers. Some of the foundational research in this field has been computational, yet replications are lacking. This paper offers a direct replication of the most influential model in the field, presented by Hong and Page in 2004\supercite{hong_groups_2004}, and a replication of a recent paper by Grim et al.\supercite{grim_diversity_2019} that offered important qualifications. By doing so with the use of an agent-based modeling framework that easily allows for extensions and adjustments to the model, this replication will also be helpful for future research into the conditions under which diversity may trump ability. \\
+
+Seventeen years ago, Hong and Page\supercite{hong_groups_2004} proposed that diversity generally trumps ability when it comes to the composition of groups of problem solvers. To support this argument, their paper, which has been cited more than 1,400 times, presented the results of an agent-based model. While similar models have been used in further research \supercite{singer2019diversity, grim_diversity_2019, holman2018diversity}, no direct replication has been published, and neither the original paper nor any of the derivations provide open code. Recent research has proposed qualifications to the original conclusions, and by replicating one of the most critical recent papers\supercite{grim_diversity_2019}, I show that these concerns deserve further and more nuanced consideration.  
 
 \subsubsection{The basic model}
 
-In order to explore the process of problem-solving, Hong and Page tasked teams of agents with finding the highest value in a ring of 2,000 random numbers, which can be thought of as payoffs associated with specific options. Each agent approaches this task with a distinct heuristic that consists of an ordered set of non-repeating integers $\{h_{1}, h_{2}, h_{3}\}$. From their current position on the ring, they look forward $h_{1}$ steps and move there if the value is greater than the current value. Otherwise, they stay put. They then try $h_{2}$ steps, $h_{3}$, $h_{1}$ steps again, and so on, until none of the three checks yields a higher value and thus a move. When they are in a group, they move together, with each agent in turn moving the entire group to the greatest value their heuristic can identify. 
+To explore the process of problem-solving, Hong and Page tasked teams of agents with finding the highest value in a ring of 2,000 random numbers, which can be thought of as payoffs associated with specific options. Each agent approaches this task with a distinct heuristic that consists of an ordered set of non-repeating integers $\{h_{1}, h_{2}, h_{3}\}$. From their current position on the ring, they look forward $h_{1}$ steps and move to that position if its value is greater than that of the current position. Otherwise, they stay put. They then try $h_{2}$ steps, $h_{3}$, $h_{1}$ steps again, and so on, until none of the three checks yields a higher value and thus a move. When they are in a group, they move together, with each agent in turn moving the entire group to the greatest value their heuristic can identify. \\
 
-To explore the trade-off between individual agents' ability and a group's diversity, these concepts need to be defined. Given that each agent's heuristic results in a unique end point from any given starting point, their \emph{ability} is defined as the \emph{average value of the end points reached from every possible starting point}. A group's \emph{diversity} is defined as the \emph{average percentage with which any pairs of heuristics do not overlap}. For example, $1, 2, 3$ and $1, 3, 5$ only overlap in one place, while $3, 4, 5$ and $4, 5, 6$ do not overlap at all.\footnote{Note that Singer\supercite{singer2019diversity} shows that a different measure of diversity - \emph{coverage diversity}, i.e. the share of possible steps covered by at least a single member of the group - more directly predicts a group's performance.} Their key result is that groups of the highest-ability agents are less diverse than randomly selected groups, and thus identify worse solutions.
+To explore the trade-off between individual agents' abilities and a group's diversity, Hong and Page needed to define these constructs. Given that each agent's heuristic results in a unique end point from any given starting point, their \emph{ability} was defined as the average value of the end points reached from every possible starting point. A group's \emph{diversity} was defined as the average percentage with which any pairs of heuristics do not overlap. For example, $\{1, 2, 3\}$ and $\{1, 3, 5\}$ only overlap in one place, while $\{3, 4, 5\}$ and $\{4, 5, 6\}$ do not overlap at all.\footnote{Note that Singer\supercite{singer2019diversity} showed that a different measure of diversity - \emph{coverage diversity}, i.e. the share of possible steps covered by at least a single member of the group - more directly predicts a group's performance.} The key result of the initial study was that groups of the highest-ability agents are less diverse than randomly selected groups, and thus identify worse solutions.
 
-\subsubsection{Grim et al.'s extension and qualification}
+\subsubsection{Grim and colleagues' extension and qualification}
 
-In a random landscape, there are no heuristics that consistently outperform others, instead agents' ability is unrelated between one problem and the next. Grim et al.\supercite{grim_diversity_2019} pointed out that this is a rather peculiar situation, as problem-solving in most domains benefits from expertise, i.e. from the use of heuristics that tend to be successful across problems. In their model, they vary the randomness of the landscape by specifying the share of points that are randomly assigned and then establishing smooth gradients between them. Their results suggest that in settings with lower randomness, the correlation between a heuristic's performance on different problems increases. In such settings, they find that teams selected based on their ability outperform randomly selected (and thus more diverse) teams.
+In a random landscape, such as that used by Hong and Page, there are no heuristics that consistently outperform others. Instead agents' ability is unrelated between one problem and the next. Grim and colleagues pointed out that this is a rather peculiar situation, as problem-solving in most domains benefits from expertise, i.e. from the use of heuristics that tend to be successful across problems. In their model, they vary the randomness of the landscape by specifying the average distance between points that are randomly assigned and then establishing smooth gradients between them. In settings with lower randomness, the correlation between a heuristic's performance on different problems increases. In such settings, they find that teams selected based on their ability outperform randomly selected (and thus more diverse) teams. They also find that the strategy employed by the teams matters; this will be discussed with the results below.
 
-\chapter{Method}
+\section{Approach}
 
-The model formulation used in this paper is the same as that used in the original paper by Hong and Page, with the addition of the smoothing parameter in the replication of the findings by Grim et al.
-
-\subsubsection{Parameters}
-
-Problems are characterised by the number of possible solutions, i.e. values on the circle (\emph{N}). In line with the papers to be replicated, this is set to 2000. Heuristics are defined by the number of positions considered by each agent (\emph{k}), which is set to three steps, and the range of step sizes to be considered (\emph{l}). Here, parameter values of 12 and 20 are explored. Finally, groups of agents are characterised by their size, which is set to be either 10 or 20 agents.
-
-!! Grim used groups of 9 for no obvious reason - change to 10 here.
+The model formulation used in this paper is the same as that used in the original paper by Hong and Page, with the addition of the smoothing parameter and the choice of strategy in the replication of the findings by Grim and colleagues.
 
 \subsubsection{Implementation}
 
-To replicate the two papers, and support future research, I implemented the model in Python, using the mesa framework \supercite{kazil2020utilizing}. This yields very readable and explicit code, yet is not particularly optimised. While Hong and Page (2004) report results based on 50 runs and Grim et al. rely on 100 runs, all results here are based on 500 runs. In the supplementary material, instruction for conducting these runs on Google Cloud Engine are provided, which allows them to be completed in a few hours.
+To replicate the two papers, and support future research, I implemented the model in Python, using the mesa framework.\supercite{kazil2020utilizing} This yields readable explicit code, and the derivation of the 'Grim-model' from the 'Hong and Page' model might serve as an example for future model adaptations. While Hong and Page (2004) reported results based on 50 random landscapes and Grim and colleagues relied on 100 runs, most results here are based on 500 landscapes. In the supplementary material, instruction for deploying these scripts to Google Cloud Engine are provided, which allows to reproduce all numerical results in just over 24 hours on 32 cores.
+
+\subsubsection{Parameters}
+
+Problems are characterised by the number of possible solutions, i.e. values on the circle (\emph{N}). In line with the papers to be replicated, this is set to 2000. Heuristics are defined by the number of positions considered by each agent (\emph{k}), which is set to three steps, and the range of step sizes to be considered (\emph{l}). Here, parameter values of 12 and 20 are considered to replicate Hong and Page, while a full sweep from 4 to 30 is conducted to assess the robustness of the results presented by Grim and colleagues. Finally, groups of agents are characterised by their size, which is set to be either 10 or 20 agents for Hong and Page, and 10 agents for Grim and colleagues.
 
 \subsubsection{Focus}
 
-To enable direct comparisons between the replication results and the original papers, I focus on replicating Table 1 in Hong and Page's paper, and Figure 2 in Grim et al.'s paper, since they provide the foundation for their main conclusions.
+To enable direct comparisons between the replication results and the original papers, I focus on replicating Table 1 in Hong and Page's paper, and Figures 2, 6 and 9 in Grim and colleagues' paper, since they provide the foundation for their main conclusions. Where discrepancies arise, I present further analyses to explore their causes.
 
-\chapter{Results}
+\section{Results}
 
-\subsubsection{The basic model: Hong and Page}
+\subsection{The basic model: Hong and Page}
 
-The replication confirmed the pattern of results observed by Hong and Page, as can be seen in Table 1. Random groups of agents outperformed groups of only the best agents in each of the four scenarios, and the observed performances were generally similar. However, there are two notable divergences: the \textit{standard deviations} reported by Hong and Page and those observed here vary by orders of magnitude. For instance, the standard deviation of the performance of group of 10 best agents with l = 12 observed here was 6.84 while Hong and Page report 0.020. However, their results seem highly implausible. For instance, they describe the results of a "representative" run in detail, during which the best agents achieved 93.2. With their standard deviation, this would translate into a z-score of 32; standard statistical software cannot even compute how unlikely such an observation would be. Similarly, the expected standard deviation in groups of random agents can be simulated straight-forwardly - in the case of l = 12 and k = 3, it is around 2.4\%-age points for teams of 10 agents and 1.1\%-age points for teams of 20 agents, each simulated over 10,000 teams, which matches what is seen in the results here. However, Hong and Page (2004) report standard deviations of 0.23 and 0.09\%-age points respectively. Thus, it appears that something is misreported here in the original article.
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{lllll}
+      \toprule
+      N & l & Team type &        Solution       & Diversity\\
+      \midrule
+      10 & 12 & highest-ability &  92.34 (1.26) &  84.63 (4.24) \\
+         &    & random &  94.35 (0.56) &  91.75 (2.52) \\
+         & 20 & highest-ability &  93.55 (1.25) &  87.06 (4.54) \\
+         &    & random &  95.73 (0.48) &  95.06 (1.77) \\
+      \midrule
+      20 & 12 & highest-ability &  93.66 (0.82) &  85.79 (3.01) \\
+         &    & random &  94.74 (0.47) &  91.82 (1.12) \\
+         & 20 & highest-ability &   95.0 (0.83) &  88.52 (3.36) \\
+         &    & random &  96.48 (0.42) &  95.05 (0.91) \\
+      \bottomrule
+      \end{tabular}
+    \caption{\label{tab:HP}Results of 500 runs of Hong \& Page model}
+    \end{table}
 
-Less straight-forwardly, the \textit{observed diversity in the best teams} diverges substantially. Here, it was 85 to 88\%, compared to 71 to 75\% reported in Hong and Page. Given that the observed diversity within random groups is very close to that reported by Hong and Page, it appears unlikely that the discrepancy is due to differences in the calculation of diversity. Grim et al. (2019, Table 1) report the heuristics used by 10 groups of 9 best agents in their replication of the Hong and Page model. On average, these group had a diversity of 83\% - evidently, this estimate is based on a sample size of 10 and thus highly imprecise, yet it is closer to the results obtained here than to those reported by Hong and Page.  
-
-Regarding the size of the effect, one might wish to note that the results obtained by 10 randomly selected agents with heuristics including step-sizes of up to 12 were only matched by groups of 20 "best" agents using more expensive heuristics, with step sizes ranging up to 20. When comparing the two groups head-to-head, and excluding between 25\% and 50\% of ties, the odds of the random group winning over the best group were between 1.6 (\textit{N} = 10, \textit{l} = 20) and 2.2 (\textit{N} = 10, \textit{l} = 12).
-
-\begin{table}
-   \centering
-   \caption{Results of 500 runs of Hong & Page model}
-   \begin{tabular}{lllll}
-   \toprule
-      &    &        &      Solution &     Diversity \\
-   N\_agents & l & team\_type &               &               \\
-   \midrule
-   10 & 12 & best &  92.48 (6.84) &  84.76 (4.39) \\
-      &    & random &  94.45 (5.55) &   91.63 (2.4) \\
-      & 20 & best &  93.27 (6.89) &  86.95 (4.61) \\
-      &    & random &  95.43 (4.29) &  94.92 (1.89) \\
-   20 & 12 & best &   93.56 (6.5) &  85.85 (2.98) \\
-      &    & random &  94.67 (5.57) &  91.75 (1.15) \\
-      & 20 & best &   94.8 (4.97) &   88.46 (3.3) \\
-      &    & random &  96.56 (3.33) &  95.07 (0.91) \\
-   \bottomrule
-   \end{tabular}
-   \end{table}
-   
     
-\subsubsection{Expansion to smoothed landscapes: Grim et al.}
+The replication confirmed the pattern of results observed by Hong and Page, as can be seen in Table \ref{tab:HP}. Random groups of agents outperformed groups of only the high-ability agents in each of the four scenarios, and the observed performances were generally similar here and in the target paper. However, there are two notable divergences. Firstly, the \textit{standard deviations} reported by Hong and Page and those observed here vary by orders of magnitude. For instance, the standard deviation of the performance of groups of 10 highest-ability agents with \textit{l} = 12 observed here was 0.56 while Hong and Page report 0.020. However, their results seem  implausible. For instance, they describe the results of a "representative" run in detail, during which the high-ability agents achieved 93.2. With their standard deviation, this would translate into a z-score of 32; standard statistical software cannot even compute how unrepresentative such an observation would be. Similarly, the expected standard deviation in groups of random agents can be simulated straight-forwardly - in the case of \textit{l} = 12 and \textit{k} = 3, it is around 2.4 for teams of 10 agents and 1.1 for teams of 20 agents, each simulated over 10,000 teams, which matches what is seen in the results here. However, Hong and Page (2004) report standard deviations of 0.23 and 0.09 respectively. Thus, it appears clear that something is misreported in the original article. \\
 
-Grim et al. (2019) extended the mdel by Hong and Page to test whether the degree of smoothness across the solution landscape makes a difference. For fully random landscapes, their paper and my replication thereof, confirms the analysis by Hong and Page: randomly selected teams outperform teams of the best agents by some 1-2\%-age points, and thus by .
+Less straight-forwardly, the \textit{observed diversity in the high-ability teams} diverges substantially. In my replications, it was 85 to 88\%, compared to 71 to 75\% reported in Hong and Page. Given that the observed diversity within random groups is very close to that reported by Hong and Page, it appears unlikely that the discrepancy is due to differences in the calculation of diversity. Grim and colleagues (Table 1) report the heuristics used by 10 groups of 9 high-ability agents in their replication of the Hong and Page model. On average, these group had a diversity of 83\% - evidently, this estimate is based on a sample size of 10 and thus highly imprecise, and on a smaller team size, which reduces diversity, yet it is closer to the results obtained here than to those reported by Hong and Page.  \\
 
-\chapter{Discussion}
+Regarding the size of the effect, one might wish to note that the results obtained by 10 randomly selected agents with heuristics including step-sizes of up to 12 were only exceeded by groups of 20 highest-ability agents using more expensive heuristics, with step sizes ranging up to 20. 
+    
+\subsection{Expansion to smoothed landscapes: Grim et al.}
 
+\begin{figure}
+    \includegraphics[width=\linewidth]{Fig2.png}
+    \caption{Average performance of random minus high-ability teams over 500 random landscapes}
+    \label{fig:Grim2}
+  \end{figure}
+ 
+ Grim and colleagues extended the model to test whether the degree of smoothness across the solution landscape makes a difference. For fully random landscapes, their paper and my replication thereof, confirms the analysis by Hong and Page: randomly selected teams outperform teams of the highest-ability agents by some 2\%-age points. However, once the landscapes are smoothed, the advantage is reduced. In fact, above a smoothness (i.e. average distance between randomly set points) of 4, 'ability trumps diversity.' My replication results in Figure \ref{fig:Grim2} closely match those presented by Grim et al. in their Figure 2. However, the addition of standard deviations to the figure highlights an important point that might go unnoticed in the original presentation: while ability trumps diversity on average on the smoother landscapes, this effect is much smaller than the reverse observed on more random landscapes and also less consistent. Also, it should be noted that the performance of both types of teams declines drastically with increasing smoothness, from 92-94\% on fully random landscapes to less than 70\% on landscapes with a smoothness factor greater than 12.
+ 
+ \subsubsection{Tournament dynamics and further comparisons}
+ 
+ Apart from proposing that ability trumps diversity on smoother landscapes, Grim and colleagues make two further important points. They suggest that this result depends on the size of the heuristics pool that the agents draw from, and the search strategy they employ. Specifically, a larger heuristics pool, which evidently enables greater diversity, is held to widen the scope for random teams to outperform highest-ability teams. Similarly, a tournament strategy might make such teams more successful. As described above, in the original model, agents take turns to try to move the whole team forward, and once they have exhausted their heuristic the next agent takes over ('relay' strategy). Alternatively, agents can individually identify the highest value they can reach, compare notes and then move to the highest value identified in that round. From there, they again each analyse possible steps and only then move to the highest possible value, and so on ('tournament' strategy). Figure \ref{fig:Grim69} shows the relative performance of both types of teams with both strategies, for various maximum step sizes \textit{l} (which determine the size of the heuristic pool) and smoothness factors. In this, I expanded the upper bound for \textit{l} from 20 to 30, in order to explore the relationship between smoothness and this parameter over a wider range. (Since the algorithmic complexity of the heuristic evaluation, at least under the current implementation, is $O(n^3)$, this resulted in a 5-fold increase in running time.) \\
+
+ \begin{figure}
+   \includegraphics[width=\linewidth]{Fig69.png}
+   \caption{Performance of random teams versus high-ability teams over 100 random landscapes for different levels of smoothness and maximum step lengths. Positive values indicate that 'diversity trumps ability', all combinations where the average is negative are marked with the '-' symbol.}
+   \label{fig:Grim69}
+ \end{figure}
+ 
+ The results closely replicate those presented in Figures 5 to 9 in Grim and colleagues.\footnote{The results also confirm the claim by Hong and Page that the strategy chosen made little difference to their results, given that the first columns with a smoothness factor of 0 look very similar across the panels.} Panel A in Figure \ref{fig:Grim69} shows that, as per the original article, "for heuristic pools roughly three times the smoothing factor or greater", random teams outperform the highest-ability teams. Under the tournament dynamic, random teams outperform highest-ability teams more often. They \textit{substantially} outperform high-ability teams when the maximum steplength is more than twice the smoothness factor within the range considered by Grim and colleagues. Above that size of the heuristic pool (\textit{l} = 20), they tend to outperform high-ability teams substantially more frequently. This indicates a non-linear relationship, though the range here is insufficient to estimate the functional form. \\
+ 
+ \begin{table}
+  \centering
+  \caption{Summary of results across 56,700 runs of varying smoothness and step lengths, showing asymmetry in distribution of winning margins}
+  \label{tab:win_comp}
+\begin{tabular}{lrrrrrr}
+  \toprule
+  \multicolumn{3}{c}{}& \multicolumn{4}{c|}{Winning margins}\\
+  Strategy & \multicolumn{2}{|c|}{Random team performance} & \multicolumn{2}{l|}{Random team} & \multicolumn{2}{l|}{high-ability team}\\
+       &  \multicolumn{1}{|l}{Win rate (\%)} &  \multicolumn{1}{l|}{Mean margin} &  Mean &  \multicolumn{1}{l|}{Max} &  Mean &  \multicolumn{1}{l|}{Max} \\
+  \midrule
+       Relay &          25.9 &            0.14 &         1.50 &        3.32 &       0.34 &      0.69 \\
+   Tournament &          60.0 &            0.54 &         0.93 &        2.58 &       0.06 &      0.21 \\
+  \bottomrule
+  \end{tabular}
+\end{table} 
+ 
+ Visually, the figures presented by Grim and colleagues look rather different from those presented here because their scales include a step-change at zero. Thus, they emphasize that highest-ability groups mostly outperform random groups with the relay strategy, and that the victories are more evenly split with the tournament strategy. This is visible here when one compares the '-' characters, indicating negative values, with the fields without annotation. However, such an emphasis obscures the fact that the highest-ability teams \textit{never} show anything close to the advantage that random teams exhibit when they dominate. For instance, under the relay-strategy, random teams only win 25.9\% of the runs, but still rack up an average advantage of 0.14 \%-age points. Table \ref{tab:win_comp} shows this asymmetry in further detail. It is also worth noting that the tournament strategy leads to better solutions. Both random and highest-performing groups achieved better outcomes with that strategy on 100\% of runs, with high-ability groups gaining 2.3 and random groups 2.8 on average.
+ 
+
+ \section{Conclusion}
+ 
+ Overall, this replication confirms the main results presented in the two target papers. Within the parameters of the model proposed by Hong and Page, randomly selected, and thus diverse, groups outperform groups of the highest ability agents when the solution landscale is fully random. As originally shown by Grim and colleagues, when randomness is reduced, this effect is weakened and eventually reversed. However, it needs to be noted that over the wide range of parameters considered here, the highest-ability teams rarely if ever \textit{substantially} outperformed the random, more diverse, teams. As shown by Grim and colleagues, more independent searches in the form of a tournament strategy and a larger heuristic pool enhance the relative performance of the diverse teams further. \\
+
+ The results indicate various directions for future research. For instance, Hong and Page noted that diversity could be conceptualised both as that of heuristics and that of perspectives, yet research using their model has so far focused on heuristics. Given the poor performance of both types of teams employing hill-climbing heuristics on the smoothed landscapes considered by Grim and colleagues, it might be time to consider different perspectives, for instance in the sense of different starting points. Additionally, further research into the boundary conditions of the "diversity trumps ability" finding is necessary. Such endeavours will hopefully be facilitated by the availability of the model as open code using the mesa framework. 
