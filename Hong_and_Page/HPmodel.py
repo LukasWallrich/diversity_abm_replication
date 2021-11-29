@@ -130,7 +130,7 @@ class HPProblem(Model):
         res = (len(heuristic1)-sum(x == y for x, y in zip(heuristic1, heuristic2)))/len(heuristic1)
         return res
 
-    def __dict_mean(self, dict_list):
+    def dict_mean(self, dict_list):
         """Calculate mean in dictionary grouped by key"""        
         #Thanks to https://stackoverflow.com/a/55220333/10581449
         mean_dict = {}
@@ -149,6 +149,6 @@ class HPProblem(Model):
                if old_solution == self.best_solution:
                 solutions.append(copy.copy(self.best_solution))
                 break
-        self.best_solution = self.__dict_mean(solutions)
+        self.best_solution = self.dict_mean(solutions)
         self.running = False    
 

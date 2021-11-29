@@ -21,10 +21,10 @@ class GrimAgent(PSAgent):
            self.focus, self.best_solution = self.problem.max_search(agent = self, update = False)
 
 class GProblem(HPProblem):
-    def __init__(self, n, k, l, N_agents, smoothness, seed = None, schedule = "base", strategy = "relay", agent_class = GrimAgent):
+    def __init__(self, n, k, l, N_agents, smoothness, seed = None, strategy = "relay", agent_class = GrimAgent):
         """Initialize problem, assess heuristics and create agent teams, considering smoothness and strategy given"""        
         self.draw_G_solution(n, smoothness)
-        super().__init__(n, k, l, N_agents, seed, schedule, agent_class = agent_class)
+        super().__init__(n, k, l, N_agents, seed, agent_class = agent_class)
         self.strategy = strategy
 
     def draw_solution(self, n):
