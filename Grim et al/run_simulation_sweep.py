@@ -15,14 +15,14 @@ fixed_params = {"n": 2000,
                }
 variable_params = {
                    "smoothness": list(range(21)),
-                   "l": range(4, 31)
+                   "l": range(4, 10)
                    }
 
 batch_run = BatchRunnerMP(GProblem,
-                        32,
+                        8,
                         variable_parameters = variable_params,
                         fixed_parameters = fixed_params,
-                        iterations=100,
+                        iterations=1,
                         max_steps=100,
                         model_reporters={"agent_descriptives": lambda m: m.agent_descriptives,
                         "best_solution": lambda m: m.best_solution})

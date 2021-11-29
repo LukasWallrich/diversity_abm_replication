@@ -2,9 +2,13 @@
 
 This repo contains code that replicates the model proposed by Hong & Page (2004), who suggested that diversity trumps ability, i.e. that a randomly selected group of problem solvers outperforms a group of the best problem solvers, who will be less diverse.
 
-It also contains replication code for Grim et al. (2019), who extended the model and proposed that the original results only apply to domains where there is no expertise.
+It also contains replication code for Grim et al. (2019), who extended the model and proposed that the original results only apply to domains where there is no/little expertise.
 
 It is based on the [mesa](https://github.com/projectmesa/mesa) framework.
+
+# Structure of the repo
+
+Each of the two replications is contained in its own folder - `Hong and Page` and `Grim et al.`. The `manuscript` folder contains the Latex files for an article to be submitted to [ReScience C](https://rescience.github.io/). 
 
 # Requirements
 
@@ -14,6 +18,11 @@ To install the requirements, you can run
     $ pip install -r requirements.txt
 ```
 
+# Running the analyses on Google Cloud Engine (GCE)
+
+The analyses to replicate Hong & Page can feasibly be run on a laptop in a matter of hours. However, by the time it comes to the parameter sweep needed for the strategy comparisons in the Grim et al. paper, 56,700 runs are needed, which each involve the evaluation of up to 24,360 possible heuristics for 2000 starting locations. On a 32-core Virtual Machine, this took just 22.5 hours. However, it probably took me as long to figure out how to conveniently deploy such scripts to GCE.
+
+When I failed to find a simple solution, I created the [pyscript2gce](https://github.com/LukasWallrich/pyscript2gce-production) helper, which creates a Docker container that executes a script when launched and saves the results. Once set up, all it takes to run a script is to push an update to a specified file (here: `run_simulation.py`) and start up a VM with a single line terminal command. For that, [a GitHub action](https://github.com/LukasWallrich/diversity_abm_replication/blob/main/.github/workflows/push_gist.yml) pushes changes to that file automatically to a Gist, which is then accessed by the VM, based on [this version](https://github.com/LukasWallrich/pyscript2gce-production/releases/tag/Diversity-ABM-replication) of pyscript2gce. The README of pyscript2gce details how this can be set up.
 
 
 # Citations
