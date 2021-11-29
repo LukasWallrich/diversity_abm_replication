@@ -1,18 +1,16 @@
 # ABM as proposed by Hong & Page (2004)
 
-#%%
 from statistics import mean
 from collections import Counter
 from itertools import permutations
 from mesa import Agent, Model
-from mesa.time import BaseScheduler, RandomActivation
+from mesa.time import BaseScheduler
 import copy
-import time
 
-#%%
 class PSAgent(Agent):
     
     def __init__(self, problem, id, team, k = None, l = None, heuristic = None):
+        """Initialize agent, assign heuristic and team"""        
         super().__init__(id, problem)
 
         if heuristic == None:
@@ -21,26 +19,23 @@ class PSAgent(Agent):
             self.heuristic = heuristic    
 
         self.best_solution = 0
-        self.focus = 0 #Start search at beginning
         self.problem = problem
         self.team = team
 
     def draw_heuristic(self, problem, k, l):
-        self.heuristic = problem.random.sample(range(1,l+1) , k)
+        """Draw heuristic as k random integers up to l"""        
+        self.heuristic = problem.random.sample(range(1,l+1), k)
 
     def step(self):
-#        print("Agent starting from " + str(self.problem.current_position))
+        """Search for highest peak accessible with own heuristic (called by mesa)"""        
         self.focus, self.best_solution = self.problem.max_search(agent = self)
 
 class HPProblem(Model):
 
-    def __init__(self, n, k, l, N_agents, seed = None, schedule = "base", agent_class = PSAgent):
-        
-        if schedule == "base":
-            self.schedule = BaseScheduler(self)
-        if schedule == "random":
-            self.schedule = RandomActivation(self)
-
+    def __init__(self, n, k, l, N_agents, seed = None, agent_class = PSAgent): 
+        #Seed automatically set by mesa if provided
+        """Initialize problem, assess heuristics and create agent teams"""        
+        self.schedule = BaseScheduler(self)
         self.agent_descriptives = {}
         self.n = n
         self.draw_solution(n)
@@ -51,6 +46,7 @@ class HPProblem(Model):
         self.running = True
 
     def draw_agents(self, k, l, N_agents, agent_class):
+        """Generate both random and best agent teams"""        
         heuristics = self.evaluate_heuristics(self.generate_heuristics(k, l))
 
         descriptives = {
@@ -60,12 +56,10 @@ class HPProblem(Model):
             }
 
         for team_type in ["random", "best"]:
-
             if team_type == "random":
                 heuristics_selected = self.__sample_from_dict(heuristics, N_agents)
             if team_type == "best":
                 heuristics_selected = dict(Counter(heuristics).most_common(N_agents))
-
             descriptives["team_average"] = mean(heuristics_selected.values())
             pairs = permutations(heuristics_selected, 2)
             descriptives["NPdiversity"] = mean([self.assess_hp_diversity(x[0], x[1]) for x in pairs])
@@ -78,12 +72,11 @@ class HPProblem(Model):
             self.agent_descriptives[team_type] = copy.copy(descriptives)
 
     def draw_solution(self, n):
+        """Generate solution landscape: n random numbers up to 100"""        
         self.solution = [self.random.uniform(0, 100) for i in range(n)]
 
-    #Agent tries to take steps of heuristic length, only moving forward if successful
-    #Explained most clearly by Singer
     def max_search(self, agent = None, heuristic = None, update = True):
-
+        """Either evaluate heuristic across all starting points, or have agent search from their current location"""        
         N = self.n #To speed things up
         SOLUTION = self.solution
 
@@ -116,24 +109,29 @@ class HPProblem(Model):
         return current, mean(optima) 
 
     def generate_heuristics(self, k,l):
+        """Generate all possible heuristics"""        
         return permutations(range(1, l + 1), k)
 
     def evaluate_heuristics(self, heuristics):
+        """Calculate 'ability' score for each heuristic - mean result from each starting point"""        
         expectations = {}
         for heuristic in heuristics:
             expectations[heuristic] = self.max_search(heuristic = heuristic, update=False)[1]
         return expectations     
 
-    def __sample_from_dict(self, d, sample): #From https://stackoverflow.com/a/66018057/10581449
-        keys = self.random.sample(list(d), sample)
+    def __sample_from_dict(self, d, n): #From https://stackoverflow.com/a/66018057/10581449
+        """Return n random objects from d"""        
+        keys = self.random.sample(list(d), n)
         values = [d[k] for k in keys]
         return dict(zip(keys, values))
 
     def assess_hp_diversity(self, heuristic1, heuristic2):
+        """Calculate diversity between two heuristics as defined by Hong & Page"""        
         res = (len(heuristic1)-sum(x == y for x, y in zip(heuristic1, heuristic2)))/len(heuristic1)
         return res
 
-    def dict_mean(self, dict_list):
+    def __dict_mean(self, dict_list):
+        """Calculate mean in dictionary grouped by key"""        
         #Thanks to https://stackoverflow.com/a/55220333/10581449
         mean_dict = {}
         for key in dict_list[0].keys():
@@ -141,16 +139,16 @@ class HPProblem(Model):
         return mean_dict
 
     def step(self):
+        """Have agent teams search for solution (called by mesa, should only take one step)"""        
         solutions = list()
         for i in range(self.n):
             self.current_position = dict.fromkeys(self.current_position, i)
-#            print("Assessing start from" + str(i))
             while True:
                old_solution = self.best_solution
                self.schedule.step()
                if old_solution == self.best_solution:
                 solutions.append(copy.copy(self.best_solution))
                 break
-        self.best_solution = self.dict_mean(solutions)
+        self.best_solution = self.__dict_mean(solutions)
         self.running = False    
 
