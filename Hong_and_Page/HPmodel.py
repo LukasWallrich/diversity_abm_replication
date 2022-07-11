@@ -117,6 +117,7 @@ class HPProblem(Model):
             "top_agent": max(heuristics.values())        
             }
 
+        # Draw "random" team based on randomly selected heuristics, and best team based on highest-performing heuristics
         for team_type in ["random", "best"]:
             if team_type == "random":
                 heuristics_selected = self.__sample_from_dict(heuristics, N_agents)
@@ -125,6 +126,8 @@ class HPProblem(Model):
             descriptives["team_average"] = mean(heuristics_selected.values())
             pairs = permutations(heuristics_selected, 2)
             descriptives["NPdiversity"] = mean([self.assess_hp_diversity(x[0], x[1]) for x in pairs])
+            
+            # Initialise agents and add them to the scheduler
 
             agents = [agent_class(self, id = team_type + str(idx), team = team_type, heuristic=val) for idx, val in enumerate(heuristics_selected)]
 
@@ -150,18 +153,19 @@ class HPProblem(Model):
         N = self.n #To speed things up
         SOLUTION = self.solution
 
-        if heuristic == None: #When agents search
+        if heuristic == None: #When agents search, start from their current location
             start = [self.current_position[agent.team]]
             heuristic = agent.heuristic
-        else: #When heuristics are evaluated
+        else: #When heuristics are evaluated, search should start from each location in turn
             start = range(N)
 
         optima = []
 
+        # Search for highest peak accessible with heuristic
         for current in start:
-            last_value = SOLUTION[current % N]
+            last_value = SOLUTION[current % N] #Turn landscape into a ring
 
-            while True:
+            while True: # Take steps using heuristic unless there are no further improvements
                 old_value = last_value
                 for step in heuristic:
                     new_value = SOLUTION[(current+step) % N]

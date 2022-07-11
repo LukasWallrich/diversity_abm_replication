@@ -11,6 +11,12 @@ fixed_params = {"n": 2000, "k": 3}
 
 variable_params = {"l": (12, 20), "N_agents": (10, 20)}
 
+# Run simulations with various parameter combinations
+# `nr_processes` represents the number of processes to use - typically the number of cores on your machine
+# `iterations` represents the number of landscapes
+# `max_steps` is the maximum number of steps the model takes. Given the design 
+# of the HPModel.step() function, it should never have to take more than 1.
+
 batch_run = BatchRunnerMP(
     HPProblem,
     16,
