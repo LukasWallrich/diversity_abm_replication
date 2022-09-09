@@ -27,9 +27,9 @@ class GrimAgent(PSAgent):
     def step(self):
         """Search for highest peak accessible with own heuristic, in tournament or relay mode (called by mesa)"""        
         if self.problem.strategy == "relay":
-           self.focus, self.best_solution = self.problem.max_search(agent = self)
+            self.focus, self.best_solution = self.problem.max_search(agent = self)
         if self.problem.strategy == "tournament":
-           self.focus, self.best_solution = self.problem.max_search(agent = self, update = False)
+            self.focus, self.best_solution = self.problem.max_search(agent = self, update = False)
 
 
 class GProblem(HPProblem):
