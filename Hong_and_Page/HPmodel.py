@@ -81,6 +81,7 @@ class HPProblem(Model):
     Methods:
         max_search: Evaluate a heuristic across all starting points, or have an agent search from their current location.
         draw_agents: Generate teams of agents (random and best)
+        draw_solution: Create solution (random landscape) that agents search
         generate_heuristics: Create heuristics (set of step sizes to be considered)
         evaluate_heuristics: Calculate average score achieved by a given heuristic
         assess_hp_diversity: Calculate diversity between two heuristics as defined by Hong & Page
@@ -112,7 +113,7 @@ class HPProblem(Model):
         self.schedule = BaseScheduler(self)
         self.agent_descriptives = {}
         self.n = n
-        self.__draw_solution(n)
+        self.draw_solution(n)
         self.optimal_solution = max(self.solution)
         self.best_solution = {"random": 0, "best": 0}
         self.current_position = {"random": 0, "best": 0}
@@ -168,7 +169,7 @@ class HPProblem(Model):
 
             self.agent_descriptives[team_type] = copy(descriptives)
 
-    def __draw_solution(self, n: int) -> None:
+    def draw_solution(self, n: int) -> None:
         """Generate solution landscape: n random numbers up to 100"""
         self.solution = [self.random.uniform(0, 100) for i in range(n)]
 
