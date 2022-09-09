@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 # ReScience yaml to latex converter
 # Released under the BSD two-clauses licence
 
