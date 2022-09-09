@@ -12,9 +12,7 @@ Mesa is a Python-based framework for agent-based modeling. It provides support f
 
 # Structure of the repo
 
-Each of the two replications is contained in its own folder - `Hong and Page` and `Grim et al.`. The `manuscript` folder contains the Latex files for an article to be submitted to [ReScience C](https://rescience.github.io/). 
-
-Within the replication folders, there always is a Jupyter notebook (`analysis.ipynb`) that reads in simulation results and analyses them. In addition, there are `run_simulation.py` files (or similar) that actually create the simulation runs
+Each of the two replications is contained in its own folder - `Hong and Page` and `Grim et al.`. In these folders, **the model code is contained in `HPmodel.py` and `Gmodel.py` respectively.** In addition, each of the folders contains `run_simulation.py` files (or similar) that actually create the simulation runs presented in the articles, and a Jupyter notebook (`analysis.ipynb`) that reads in simulation results to summarise and visualize them. The `run_simulation.py` file in the root folder is only present to specify which simulation should be run on Google Cloud Engine - see below.
 
 # Requirements
 
@@ -23,6 +21,8 @@ To install the requirements, you can run
 ```
     $ pip install -r requirements.txt
 ```
+
+Note that there has been an issue with installing mesa from conda - so we recommend using pip.
 
 # Running the simulations on Google Cloud Engine (GCE)
 
