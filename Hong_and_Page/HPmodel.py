@@ -26,7 +26,7 @@ class PSAgent(Agent):
     def __init__(
         self,
         problem: "HPProblem",
-        id: str,
+        agent_id: str,
         team: str,
         k: int = None,
         l: int = None,
@@ -45,7 +45,7 @@ class PSAgent(Agent):
             l (int): Maximum step length to consider (e.g., 10)
             heuristic (list): Alternative to k and l, the specific heuristic can be given
         """
-        super().__init__(id, problem)
+        super().__init__(agent_id, problem)
 
         if heuristic is None:
             self.__draw_heuristic(k, l)
@@ -159,7 +159,7 @@ class HPProblem(Model):
 
             agents = [
                 agent_class(
-                    self, id=team_type + str(idx), team=team_type, heuristic=val
+                    self, agent_id=team_type + str(idx), team=team_type, heuristic=val
                 )
                 for idx, val in enumerate(heuristics_selected)
             ]

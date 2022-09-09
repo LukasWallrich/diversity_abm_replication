@@ -9,6 +9,10 @@ metadata and PDF are always synced.
 
 You can also use overleaf with the [provided template](https://www.overleaf.com/read/kfrwdmygjyqw) but in this case, you'll have to enter `metadata.tex` manually.
 
+#### Getting the template to work on my Windows machine
+
+When yaml-to-latex.py is called from the Makefile, this fails due to spaces in foldernames - that are inevitable in the Windows user folder ... so do this in a temporary root folder without spaces. Then the script still fails due to bibliography issues, so the [workaround on Github](https://github.com/ReScience/template/issues/25#issuecomment-945582563) is needed.  
+
 #### Usage
 
 For a submission, fill in information in

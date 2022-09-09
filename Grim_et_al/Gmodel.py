@@ -1,18 +1,17 @@
-# Used this import of HPModel to avoid duplicating files
-import httpimport
-
-url = "https://gist.githubusercontent.com/LukasWallrich/05f445821fbae694b37a205dc08b2b4f/raw/"
-
-with httpimport.remote_repo(["HPmodel"], url):
-    from HPmodel import HPProblem, PSAgent
-
-# Alternative: download file into same folder, then run
-# from HPmodel import HPProblem, PSAgent
-
 import pandas as pd
 import numpy as np
 from copy import copy
 
+# Used this import of HPModel to avoid duplicating files
+import httpimport
+
+URL = "https://gist.githubusercontent.com/LukasWallrich/05f445821fbae694b37a205dc08b2b4f/raw/"
+
+with httpimport.remote_repo(["HPmodel"], URL):
+    from HPmodel import HPProblem, PSAgent
+
+# Alternative: download file into same folder, then run
+# from HPmodel import HPProblem, PSAgent
 
 class GrimAgent(PSAgent):
     """Agent for Hong-Page problem-solving model as extended by Grim et al.
@@ -50,6 +49,7 @@ class GProblem(HPProblem):
 
     Methods:
         max_search: Evaluate a heuristic across all starting points, or have an agent search from their current location.
+        draw_G_solution: Draw a solution with a specified smoothness (i.e. degree of randomness)
         step: Advance model by one step.
     """
 
@@ -82,22 +82,23 @@ class GProblem(HPProblem):
               agent independently searches for improvements, and then the teams move to the best solution found in that round.
 
         """
-        self.__draw_G_solution(n, smoothness)
+        self.draw_G_solution(n, smoothness)
+        self.smoothness = smoothness
         super().__init__(n, k, l, N_agents, seed, agent_class=agent_class)
         self.strategy = strategy
 
-    def __draw_solution(self, n):
-        """Overridden in favor of draw_G_solution"""
+    def draw_solution(self, n: int) -> None:
+        """ Superseded by draw_G_solution """
         pass
 
-    def __draw_G_solution(self, n: int, smoothness: int) -> None:
+    def draw_G_solution(self, n: int, smoothness: int) -> None:
         """Generate solution landscape of length n, consisting of random values approximately smoothness apart and interpolated"""
         if smoothness == 0:
-            self._HPProblem__draw_solution(n)
+            super().draw_solution(n)
         else:
             i = 0
             solution = pd.Series(np.nan for x in range(n))
-            while (i < n):  
+            while i < n:
             # Create random heights on average every `smoothness` steps apart
                 solution[i] = self.random.uniform(0, 100)
                 i += 1 + self.random.randrange(2 * smoothness)
@@ -122,16 +123,16 @@ class GProblem(HPProblem):
         for i in range(self.n):
             self.current_position = dict.fromkeys(self.current_position, i)
             self.best_solution = dict.fromkeys(self.best_solution, self.solution[i])
-            while (True):  
+            while True:
             # Until the solution no longer improves on a full pass through the agents
                 old_solution = self.best_solution
                 self.schedule.step()  # Have each agent move to max position they can reach
                 # Update current position of each team based on maximum of agent positions
                 pos = [
                     {
-                        "team": a.__getattribute__("team"),
-                        "solution": a.__getattribute__("best_solution"),
-                        "focus": a.__getattribute__("focus"),
+                        "team": a.team,
+                        "solution": a.best_solution,
+                        "focus": a.focus,
                     }
                     for a in self.schedule.agents
                 ]
