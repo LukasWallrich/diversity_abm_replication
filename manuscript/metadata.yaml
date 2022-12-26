@@ -77,34 +77,34 @@ language: Python
 
 # For example, the URL of the GitHub issue where review actually occured
 review: 
-  - url: 
+  - url: https://github.com/ReScience/submissions/issues/61
 
 contributors:
-  - name:
-    orcid: 
+  - name: Olivia Guest
+    orcid: 0000-0002-1891-0972
     role: editor
-  - name:
-    orcid:
+  - name: Marieke Woensdregt
+    orcid: 0000-0001-5454-4722
     role: reviewer
-  - name:
-    orcid:
+  - name: Fausto Carcassi 
+    orcid: 0000-0001-6843-1737
     role: reviewer
 
 # This information will be provided by the editor
 dates:
-  - received:  November 1, 2018
-  - accepted:
-  - published: 
+  - received:  November 29, 2021
+  - accepted:  October 19, 2022
+  - published: December 19, 2022
 
 # This information will be provided by the editor
 article:
-  - number: # Article number will be automatically assigned during publication
-  - doi:    # DOI from Zenodo
-  - url:    # Final PDF URL (Zenodo or rescience website?)
+  - number: 6
+  - doi: 10.5072/zenodo.1137949
+  - url: https://sandbox.zenodo.org/record/1137949/files/article.pdf   
 
 # This information will be provided by the editor
 journal:
   - name:   "ReScience C"
   - issn:   2430-3658
-  - volume: 4
+  - volume: 8
   - issue:  1
